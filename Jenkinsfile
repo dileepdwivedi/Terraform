@@ -1,4 +1,19 @@
-resource "aws_instance" "myInstance" {
+pipeline {
+ agent any
+ 
+ stages {
+ stage(‘checkout’) {
+ steps {
+ git branch: ‘develop’, url: ‘git@your url’
+ 
+ }
+ }
+
+ 
+ stage(‘Provision infrastructure’) {
+ 
+ steps {
+ resource "aws_instance" "myInstance" {
   ami           = "ami-06ce3edf0cff21f07"
   instance_type = "t2.small"
   user_data     = <<-EOF
@@ -13,4 +28,12 @@ resource "aws_instance" "myInstance" {
 
 output "DNS" {
   value = aws_instance.myInstance.public_dns
+} 
+ 
+ }
+ }
+ 
+ 
+ 
+ }
 }
